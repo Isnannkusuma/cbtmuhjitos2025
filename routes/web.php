@@ -5,6 +5,8 @@ use App\Livewire\HasilUjianList;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ExportPDFController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UjianController;
 use Inertia\Inertia;
 
 
@@ -20,6 +22,10 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/ujian', function () {
+    return Inertia::render('Ujian');
+})->middleware(['auth', 'verified'])->name('ujian');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +47,20 @@ Route::get('/admin/avatar/{filename}', function ($filename) {
 
 Route::get('/export/hasil-ujian/{id}', [ExportPDFController::class, 'export'])
     ->name('export.hasil.ujian');
+
+// route baru
+Route::middleware(['auth'])
+    ->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/ujian/{id}', [UjianController::class, 'show'])->name('ujian.show');
+    Route::post('/ujian/{id}/submit', [UjianController::class, 'submit'])->name('ujian.submit');
+});
+
 
 
 require __DIR__.'/auth.php';

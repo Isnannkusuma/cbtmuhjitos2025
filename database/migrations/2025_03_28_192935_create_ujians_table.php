@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('id_mapel')->constrained('mapel');
             $table->foreignId('id_guru')->constrained('guru');
             $table->string('nama_ujian');
-            $table->string('waktu');
+            $table->string('waktu')->change();
             $table->timestamps();
         });
     }

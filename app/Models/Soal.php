@@ -9,7 +9,7 @@ use Maatwebsite\Excel\Concerns\Importable;
 
 class Soal extends Model
 {
-    use HasFactory, Importable;
+    use HasFactory; //importable e Tak Hapus
 
     protected $table = 'soal';
 
