@@ -79,7 +79,6 @@ class UserResource extends Resource
                     ->label('Role')
                     ->searchable()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('role')
                     ->label('Status')
                     ->badge()

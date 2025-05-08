@@ -85,7 +85,6 @@ class SoalResource extends Resource
                 Forms\Components\FileUpload::make('pilihan_a_gambar')
                     ->label('Pilihan A (Gambar)')
                     ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->directory('jawaban/pilihan_a')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
                         $timestamp = Carbon::now()->format('YmdHis');
@@ -104,7 +103,6 @@ class SoalResource extends Resource
                 Forms\Components\FileUpload::make('pilihan_b_gambar')
                     ->label('Pilihan B (Gambar)')
                     ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->directory('jawaban/pilihan_b')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
                         $timestamp = Carbon::now()->format('YmdHis');
@@ -120,7 +118,6 @@ class SoalResource extends Resource
                 Forms\Components\FileUpload::make('pilihan_c_gambar')
                     ->label('Pilihan C (Gambar)')
                     ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->directory('jawaban/pilihan_c')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
                         $timestamp = Carbon::now()->format('YmdHis');
@@ -136,7 +133,6 @@ class SoalResource extends Resource
                 Forms\Components\FileUpload::make('pilihan_d_gambar')
                     ->label('Pilihan D (Gambar)')
                     ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->directory('jawaban/pilihan_d')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
                         $timestamp = Carbon::now()->format('YmdHis');
@@ -152,7 +148,6 @@ class SoalResource extends Resource
                 Forms\Components\FileUpload::make('pilihan_e_gambar')
                     ->label('Pilihan E (Gambar)')
                     ->image()
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->directory('jawaban/pilihan_e')
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
                         $timestamp = Carbon::now()->format('YmdHis');
@@ -197,7 +192,13 @@ class SoalResource extends Resource
                 Tables\Columns\TextColumn::make('pertanyaan')
                     ->label('Pertanyaan')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->getStateUsing(function ($record) {
+                        return Str::limit($record->pertanyaan, 50);
+                    })
+                    ->tooltip(function ($record) {
+                        return $record->pertanyaan;
+                    }),
                 Tables\Columns\TextColumn::make('jawaban')
                     ->label('Jawaban')
                     ->searchable()

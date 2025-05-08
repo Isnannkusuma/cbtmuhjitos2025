@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AksesUjianResource\Pages;
-use App\Filament\Resources\AksesUjianResource\RelationManagers;
 use App\Models\Akses_ujian;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -11,6 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class AksesUjianResource extends Resource
 {
@@ -31,25 +31,26 @@ class AksesUjianResource extends Resource
                 Forms\Components\Select::make('id_siswa')
                     ->label('Nama Siswa')
                     ->relationship('siswa', 'nama_siswa')
-                    ->searchable()
-                    ->preload()
+                    ->placeholder('Pilih Siswa')
+                    ->reactive()
                     ->required(),
                 Forms\Components\Select::make('id_ujian')
                     ->label('Nama Ujian')
                     ->relationship('ujian', 'nama_ujian')
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    ->reactive(),
                 Forms\Components\Select::make('status')
                     ->label('Status')
                     ->options([
                         'not_started' => 'Belum Dimulai',
                         'can_start' => 'Start',
-                        'in_progress' => 'Sedang Dikerjakan',
                         'completed' => 'Selesai',
                     ])
-                    ->required(),
-            ]);
+                    ->required()
+                    ->reactive(),
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -76,7 +77,7 @@ class AksesUjianResource extends Resource
                         'not_started' => 'gray',
                         'can_start' => 'primary',
                         'in_progress' => 'warning',
-                        'completed' => 'succes',
+                        'completed' => 'success',
                     })
                     ->formatStateUsing(fn($state) => match ($state) {
                         'not_started' => 'Belum Dimulai',
@@ -110,6 +111,27 @@ class AksesUjianResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\BulkAction::make('bulk_edit')
+                        ->label('Edit Data')
+                        ->icon('heroicon-o-pencil')
+                        ->color('warning')
+                        ->action(function ($records, $data) {
+                            $records->each(function ($record) use ($data) {
+                                $record->update([
+                                    'status' => $data['status'],
+                                ]);
+                            });
+                        })
+                        ->form([
+                            Forms\Components\Select::make('status')
+                                ->label('Status')
+                                ->options([
+                                    'not_started' => 'Belum Dimulai',
+                                    'can_start' => 'Start',
+                                    'completed' => 'Selesai',
+                                ])
+                                ->required(),
+                        ]),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
@@ -126,7 +148,7 @@ class AksesUjianResource extends Resource
     {
         return [
             'index' => Pages\ListAksesUjians::route('/'),
-            'create' => Pages\CreateAksesUjian::route('/create'),
+            // 'create' => Pages\CreateAksesUjian::route('/create'),
             // 'edit' => Pages\EditAksesUjian::route('/{record}/edit'),
         ];
     }

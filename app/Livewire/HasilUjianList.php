@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\Hasil_ujian;
 use Livewire\Component;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
@@ -14,8 +13,8 @@ use Filament\Tables\Contracts\HasTable;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Livewire\Attributes\Url;
-use App\Filament\Resources\HasilUjianResource\Pages;
-use Filament\Resources\Resource;
+use Maatwebsite\Excel\Facades\Excel;    
+use App\Exports\HasilUjianExport;
 
 class HasilUjianList extends Component implements HasTable, HasForms
 {
@@ -105,7 +104,14 @@ class HasilUjianList extends Component implements HasTable, HasForms
                     ->modalSubheading('Apakah Anda yakin ingin menghapus Hasil Ujian ini?'),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('print')
+                Tables\Actions\Action::make('excel')
+                    ->label('Export Excel')
+                    ->icon('heroicon-o-folder-arrow-down')
+                    ->action(function () {
+                        return Excel::download(new HasilUjianExport($this->id), 'hasil_ujian.xlsx');
+                    })
+                    ->color('success'),
+                Tables\Actions\Action::make('pdf')
                     ->label('Export PDF')
                     ->icon('heroicon-o-printer')
                     ->url(fn () => route('export.hasil.ujian', ['id' => $this->id]), shouldOpenInNewTab: true)

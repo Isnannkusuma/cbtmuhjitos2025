@@ -5,42 +5,61 @@ export default function Dashboard({ aksesUjian, hasilUjian }) {
     return (
         <AuthenticatedLayout
             header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
+                <h2 className="text-2xl font-bold leading-tight text-gray-800">
                     Dashboard Siswa
                 </h2>
             }
         >
             <Head title="Dashboard" />
 
-            <div className="py-12">
+            <div className="py-12 bg-gray-100">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            Selamat datang di Dashboard!
+                    <div className="overflow-hidden bg-white shadow-lg sm:rounded-lg">
+                        <div className="p-6 text-gray-900 text-center">
+                            <h1 className="text-3xl font-bold text-blue-600">
+                                Selamat Datang di Dashboard!
+                            </h1>
+                            <p className="mt-2 text-gray-600">
+                                Akses ujian Anda dan lihat hasil ujian di sini.
+                            </p>
                         </div>
                     </div>
 
                     {/* Card Container */}
-                    <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                         {aksesUjian.map((item, index) => (
                             <div
                                 key={index}
-                                className="p-4 bg-white shadow-md rounded-lg border border-gray-200"
+                                className="p-6 bg-white shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300"
                             >
                                 <h3 className="text-lg font-semibold text-gray-800">
-                                    Ujian: {item.ujian.nama}
+                                    Nama Ujian: {item.nama_ujian}
                                 </h3>
-                                <p className="text-gray-600">
-                                    Status: {item.status === 'not_started'
-                                        ? 'Not Started'
-                                        : item.status === 'in_progress'
-                                        ? 'In Progress'
-                                        : item.status === 'completed'
-                                        ? 'Completed'
-                                        : 'Can Start'}
+                                <p className="text-gray-600 mt-2">Nama Siswa: {item.nama_siswa}</p>
+                                <p className="text-gray-600 mt-1">
+                                    Status:{' '}
+                                    <span
+                                        className={`font-bold ${
+                                            item.status === 'not_started'
+                                                ? 'text-yellow-500'
+                                                : item.status === 'in_progress'
+                                                ? 'text-blue-500'
+                                                : item.status === 'completed'
+                                                ? 'text-green-500'
+                                                : 'text-gray-500'
+                                        }`}
+                                    >
+                                        {item.status === 'not_started'
+                                            ? 'Belum Dimulai'
+                                            : item.status === 'in_progress'
+                                            ? 'Sedang Berlangsung'
+                                            : item.status === 'completed'
+                                            ? 'Selesai'
+                                            : 'Dapat Dimulai'}
+                                    </span>
                                 </p>
                                 <button
-                                    className={`mt-4 px-4 py-2 text-white rounded ${
+                                    className={`mt-4 w-full px-4 py-2 text-white rounded-lg font-semibold ${
                                         item.status === 'can_start'
                                             ? 'bg-blue-600 hover:bg-blue-700'
                                             : 'bg-gray-400 cursor-not-allowed'
@@ -60,31 +79,6 @@ export default function Dashboard({ aksesUjian, hasilUjian }) {
                                 </button>
                             </div>
                         ))}
-                    </div>
-
-                    {/* Hasil Ujian */}
-                    <div className="mt-6">
-                        <h2 className="text-xl font-semibold text-gray-800 mb-4">Hasil Ujian</h2>
-                        {hasilUjian.length > 0 ? (
-                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {hasilUjian.map((hasil, index) => (
-                                    <div
-                                        key={index}
-                                        className="p-4 bg-white shadow-md rounded-lg border border-gray-200"
-                                    >
-                                        <h3 className="text-lg font-semibold text-gray-800">
-                                            Ujian: {hasil.ujian.nama}
-                                        </h3>
-                                        <p className="text-gray-600">Jumlah Soal: {hasil.jumlah_soal}</p>
-                                        <p className="text-gray-600">Benar: {hasil.jumlah_benar}</p>
-                                        <p className="text-gray-600">Salah: {hasil.jumlah_salah}</p>
-                                        <p className="text-gray-600">Nilai: {hasil.nilai}</p>
-                                    </div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-gray-600">Belum ada hasil ujian. Silakan mulai ujian terlebih dahulu.</p>
-                        )}
                     </div>
                 </div>
             </div>

@@ -12,16 +12,16 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $userId = Auth::user()->id;
+        $siswaId = Auth::user()->id_siswa; 
 
         // Ambil data akses ujian
-        $aksesUjian = Akses_ujian::with('ujian')
-            ->where('id_siswa', $userId)
+        $aksesUjian = Akses_ujian::with(['ujian', 'siswa']) 
+            ->where('id_siswa', $siswaId)
             ->get()
-            ->map(function ($akses) use ($userId) {
+            ->map(function ($akses) use ($siswaId) {
                 // Cek apakah ujian sudah selesai
                 $hasil = Hasil_ujian::where('id_ujian', $akses->id_ujian)
-                    ->where('id_siswa', $userId)
+                    ->where('id_siswa', $siswaId)
                     ->first();
 
                 if ($hasil || $akses->status === 'completed') {
@@ -34,12 +34,18 @@ class DashboardController extends Controller
                     $akses->status = 'not_started'; // Belum diberikan akses
                 }
 
-                return $akses;
+                // Tambahkan nama ujian dan nama siswa
+                return [
+                    'id_ujian' => $akses->id_ujian,
+                    'nama_ujian' => $akses->ujian->nama_ujian ?? 'Tidak Tersedia', 
+                    'nama_siswa' => $akses->siswa->nama_siswa ?? 'Tidak Tersedia', 
+                    'status' => $akses->status,
+                ];
             });
 
         // Ambil data hasil ujian
         $hasilUjian = Hasil_ujian::with('ujian')
-            ->where('id_siswa', $userId)
+            ->where('id_siswa', $siswaId)
             ->get();
 
         return Inertia::render('Dashboard', [

@@ -37,4 +37,5 @@ class Ujian extends Model
     {
         return $this->hasMany(Soal::class, 'id_ujian');
     }
+
 }
