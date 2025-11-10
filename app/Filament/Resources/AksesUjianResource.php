@@ -60,7 +60,6 @@ class AksesUjianResource extends Resource
                 Tables\Columns\TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(fn($rowLoop) => $rowLoop->iteration)
-                    ->searchable()
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('siswa.nama_siswa')
                     ->label('Nama Siswa')

@@ -183,7 +183,6 @@ class SoalResource extends Resource
                 Tables\Columns\TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(fn($rowLoop) => $rowLoop->iteration)
-                    ->searchable()
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('ujian.nama_ujian')
                     ->label('Nama Ujian')

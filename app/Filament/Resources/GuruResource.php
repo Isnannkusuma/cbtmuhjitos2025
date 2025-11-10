@@ -40,7 +40,6 @@ class GuruResource extends Resource
                 Tables\Columns\TextColumn::make('no')
                     ->label('No')
                     ->getStateUsing(fn($rowLoop) => $rowLoop->iteration)
-                    ->searchable()
                     ->sortable(false),
                 Tables\Columns\TextColumn::make('nama_guru')
                     ->label('Nama Guru')

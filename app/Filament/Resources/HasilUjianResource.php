@@ -68,9 +68,7 @@ class HasilUjianResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('no')
                     ->label('No')
-                    ->getStateUsing(fn($rowLoop) => $rowLoop->iteration)
-                    ->searchable()
-                    ->sortable(false),
+                    ->getStateUsing(fn($rowLoop) => $rowLoop->iteration),
                 Tables\Columns\TextColumn::make('nama_ujian')
                     ->label('Nama Ujian')
                     ->searchable()
@@ -85,8 +83,7 @@ class HasilUjianResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jumlah_soal')
                     ->label('Jumlah Soal')
-                    ->getStateUsing(fn($record) => $record->soal()->count())
-                    ->searchable(),
+                    ->getStateUsing(fn($record) => $record->soal()->count()),
                 Tables\Columns\TextColumn::make('waktu')
                     ->label('Waktu')
                     ->getStateUsing(fn($record) => $record->waktu . ' menit')

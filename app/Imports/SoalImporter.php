@@ -27,16 +27,22 @@ class SoalImporter implements ToModel, WithValidation, WithHeadingRow
             return null;
         }
 
+        $pilihanA = isset($row['pilihan_a']) ? (string) $row['pilihan_a'] : null;
+        $pilihanB = isset($row['pilihan_b']) ? (string) $row['pilihan_b'] : null;
+        $pilihanC = isset($row['pilihan_c']) ? (string) $row['pilihan_c'] : null;
+        $pilihanD = isset($row['pilihan_d']) ? (string) $row['pilihan_d'] : null;
+        $pilihanE = isset($row['pilihan_e']) ? (string) $row['pilihan_e'] : null;
+
         return new Soal([
             'id_ujian' => $this->selectedUjianId,
             'pertanyaan' => $row['pertanyaan'] ?? null,
             'tipe_pertanyaan' => $row['tipe_pertanyaan'] ?? null,
             'bobot' => $row['bobot'] ?? null,
-            'pilihan_a' => $row['pilihan_a'] ?? null,
-            'pilihan_b' => $row['pilihan_b'] ?? null,
-            'pilihan_c' => $row['pilihan_c'] ?? null,
-            'pilihan_d' => $row['pilihan_d'] ?? null,
-            'pilihan_e' => $row['pilihan_e'] ?? null,
+            'pilihan_a' => $pilihanA,
+            'pilihan_b' => $pilihanB,
+            'pilihan_c' => $pilihanC,
+            'pilihan_d' => $pilihanD,
+            'pilihan_e' => $pilihanE,
             'jawaban' => $row['jawaban'] ?? null,
         ]);
     }
